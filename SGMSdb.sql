@@ -65,6 +65,7 @@ CREATE TABLE rental_instrument (
     instrument_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
     type VARCHAR(100) NOT NULL,
     brand VARCHAR(100),
+	price FLOAT(2) NOT NULL,
     CONSTRAINT pk_rental_instrument PRIMARY KEY (instrument_id)
 );
 
@@ -76,7 +77,7 @@ CREATE TABLE skill_level (
 
 CREATE TABLE student (
     student_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
-    enrolled TIMESTAMP(10) NOT NULL,
+    enrolled TIMESTAMP(6) NOT NULL,
     person_id INT NOT NULL,
     price_scheme_id INT NOT NULL,
     CONSTRAINT pk_student PRIMARY KEY (student_id),
@@ -146,7 +147,7 @@ CREATE TABLE price_list (
 
 CREATE TABLE rental (
     rental_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
-    lease_end TIMESTAMP(10) NOT NULL,
+    lease_end TIMESTAMP(6) NOT NULL,
     instrument_id INT NOT NULL,
     student_id INT NOT NULL,
     CONSTRAINT pk_rental PRIMARY KEY (rental_id),
@@ -162,32 +163,33 @@ CREATE TABLE sibling (
 );
 
 CREATE TABLE available_time (
-    available_time TIMESTAMP(10) NOT NULL,
+    available_time TIMESTAMP(6) NOT NULL,
     instructor_id INT NOT NULL,
     PRIMARY KEY (available_time, instructor_id),
     CONSTRAINT fk_available_time_instructor FOREIGN KEY (instructor_id) REFERENCES instructor(instructor_id) ON DELETE CASCADE
+);
+
+CREATE TABLE instrument_lesson (
+    instrument_lesson_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+	group_lesson_id INT,
+    skill_level_id INT NOT NULL,
+    instrument_id INT NOT NULL,
+    CONSTRAINT pk_instrument_lesson PRIMARY KEY (instrument_lesson_id),
+    CONSTRAINT fk_instrument_lesson_skill_level FOREIGN KEY (skill_level_id) REFERENCES skill_level(skill_level_id),
+    CONSTRAINT fk_instrument_lesson_instrument FOREIGN KEY (instrument_id) REFERENCES instrument(instrument_id),
+	CONSTRAINT fk_instrument_lesson_group_lesson FOREIGN KEY (group_lesson_id) REFERENCES group_lesson(group_lesson_id)
 );
 
 CREATE TABLE group_lesson (
     group_lesson_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
     min_students INT NOT NULL,
     max_students INT NOT NULL,
-    time_given TIMESTAMP(10) NOT NULL,
+    time_given TIMESTAMP(6) NOT NULL,
     instructor_id INT NOT NULL,
-	instrument_lesson_id INT, 
     CONSTRAINT pk_group_lesson PRIMARY KEY (group_lesson_id),
     CONSTRAINT fk_group_lesson_instructor FOREIGN KEY (instructor_id) REFERENCES instructor(instructor_id),
-	CONSTRAINT fk_group_lesson_instrument_lesson FOREIGN KEY (instrument_lesson_id) REFERENCES instrument_lesson(instrument_lesson_id)
 );
 
-CREATE TABLE instrument_lesson (
-    instrument_lesson_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
-    skill_level_id INT NOT NULL,
-    instrument_id INT NOT NULL,
-    CONSTRAINT pk_instrument_lesson PRIMARY KEY (instrument_lesson_id),
-    CONSTRAINT fk_instrument_lesson_skill_level FOREIGN KEY (skill_level_id) REFERENCES skill_level(skill_level_id),
-    CONSTRAINT fk_instrument_lesson_instrument FOREIGN KEY (instrument_id) REFERENCES instrument(instrument_id)
-);
 
 CREATE TABLE student_group_lesson (
     group_lesson_id INT NOT NULL,
@@ -198,7 +200,7 @@ CREATE TABLE student_group_lesson (
 );
 
 CREATE TABLE ensemble_lesson (
-    group_lesson_id INT GENERATED ALWAYS AS IDENTITY NOT NULL,
+    group_lesson_id INT NOT NULL,
     genre_id INT NOT NULL,
     CONSTRAINT pk_ensemble_lesson PRIMARY KEY (group_lesson_id),
 	CONSTRAINT fk_ensemble_lesson_genre FOREIGN KEY (genre_id) REFERENCES genre(genre_id)
@@ -206,7 +208,7 @@ CREATE TABLE ensemble_lesson (
 	
 CREATE TABLE individual_lesson (
 	instrument_lesson_id INT NOT NULL,
-	time_given TIMESTAMP NOT NULL,
+	time_given TIMESTAMP(6) NOT NULL,
 	instructor_id INT NOT NULL,
 	student_id INT NOT NULL,
 	CONSTRAINT pk_individual_lesson PRIMARY KEY (instrument_lesson_id),
