@@ -178,15 +178,18 @@ INSERT INTO instrument_lesson (skill_level_id, instrument_id) VALUES
 (2, 2),
 (3, 3),
 (1, 4),
-(2, 5);
+(2, 5),
+(3, 1),
+(3, 2);
 
 -- Inserting dummy data for 'group_lesson' table
 INSERT INTO group_lesson (min_students, max_students, time_given, instructor_id, instrument_lesson_id) VALUES
-(3, 10, '2024-12-10 10:00:00', 1, 1),
+(3, 10, '2024-12-08 10:00:00', 1, 1),
 (2, 6, '2024-12-11 12:00:00', 2, 2),
 (4, 8, '2024-12-12 14:00:00', 1, 3),
 (5, 15, '2024-12-13 16:00:00', 2, 4),
-(3, 9, '2024-12-14 18:00:00', 2, 5);
+(3, 9, '2024-12-14 18:00:00', 2, 5),
+(3, 8, '2024-12-23 10:00:00', 2, 5);
 
 -- Inserting dummy data for 'individual_lesson' table
 INSERT INTO individual_lesson (instrument_lesson_id, time_given, instructor_id, student_id) VALUES
@@ -194,7 +197,8 @@ INSERT INTO individual_lesson (instrument_lesson_id, time_given, instructor_id, 
 (2, '2024-12-16 10:00:00', 2, 2),
 (3, '2024-12-17 11:00:00', 1, 3),
 (4, '2024-12-18 12:00:00', 2, 4),
-(5, '2024-12-19 13:00:00', 1, 5);
+(5, '2024-12-19 13:00:00', 1, 5),
+(6, '2024-11-11 10:00:00', 1, 1);
 
 -- Inserting dummy data for 'ensemble_lesson' table
 INSERT INTO ensemble_lesson (group_lesson_id, genre_id) VALUES
